@@ -1,0 +1,505 @@
+service: Indra
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  region: us-east-2
+  environment:
+    ACTOR_TABLE: Actor-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/Actor-*'
+
+functions:
+  getPeople:
+    handler: handler.getPeople
+    events:
+      - http:
+          path: swapi/people
+          method: get
+          documentation:
+            summary: 'Get people'
+            description: 'Get all people from Star Wars'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Array with all people from Star Wars'
+                responseModels:
+                  application/json: 'GetPeopleResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getPersonById:
+    handler: handler.getPersonById
+    events:
+      - http:
+          path: swapi/people/{id}
+          method: get
+          documentation:
+            summary: 'Get person'
+            description: 'Get a single person from all people from Star Wars'
+            pathParams:
+              - name: 'id'
+                description: 'The ID of the person'
+                schema:
+                  type: 'string'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Array with all people from Star Wars'
+                responseModels:
+                  application/json: 'GetPeopleResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getFilms:
+    handler: handler.getFilms
+    events:
+      - http:
+          path: swapi/films
+          method: get
+          documentation:
+            summary: 'Get films'
+            description: 'Get all Star Wars films'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Array with all Star Wars films'
+                responseModels:
+                  application/json: 'GetFilmsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getFilmById:
+    handler: handler.getFilmById
+    events:
+      - http:
+          path: swapi/films/{id}
+          method: get
+          documentation:
+            summary: 'Get film'
+            description: 'Get a single Star Wars film'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Single Star Wars film'
+                responseModels:
+                  application/json: 'GetFilmsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getStarships:
+    handler: handler.getStarships
+    events:
+      - http:
+          path: swapi/starships
+          method: get
+          documentation:
+            summary: 'Get starships'
+            description: 'Get all starsship in Wars films'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Array with all Star Wars starships'
+                responseModels:
+                  application/json: 'GetStarshipsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getStarshipById:
+    handler: handler.getStarshipById
+    events:
+      - http:
+          path: swapi/starships/{id}
+          method: get
+          documentation:
+            summary: 'Get starsip'
+            description: 'Get a single Star Wars starship'
+            pathParams:
+              - name: 'id'
+                description: 'The ID of the starship'
+                schema:
+                  type: 'string'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Single Star Wars starship'
+                responseModels:
+                  application/json: 'GetStarshipsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getActors:
+    handler: handler.getActors
+    events:
+      - http:
+          path: dynamo/actor
+          method: get
+          documentation:
+            summary: 'Get actors'
+            description: 'Get all actors from DynamoDB'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Array with all the actors'
+                responseModels:
+                  application/json: 'GetActorsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  getActorById:
+    handler: handler.getActorById
+    events:
+      - http:
+          path: dynamo/actor/{id}
+          method: get
+          documentation:
+            summary: 'Get actor by Id'
+            description: 'Get actor from DynamoDB By ID'
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Requested Actor'
+                responseModels:
+                  application/json: 'GetActorsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  createActor:
+    handler: handler.createActor
+    events:
+      - http:
+          path: dynamo/actor
+          method: post
+          documentation:
+            summary: 'Save actor'
+            description: 'Save actor'
+            requestModels:
+               "application/json": ActorRequest
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Actor created'
+                responseModels:
+                  application/json: 'GetActorsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  updateActor:
+    handler: handler.updateActor
+    events:
+      - http:
+          path: dynamo/actor
+          method: put
+          documentation:
+            summary: 'Update actor'
+            description: 'Update actor'
+            requestModels:
+               "application/json": ActorRequest
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Actor updated'
+                responseModels:
+                  application/json: 'GetActorsResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+
+  deleteActor:
+    handler: handler.deleteActor
+    events:
+      - http:
+          path: dynamo/actor
+          method: delete
+          documentation:
+            summary: 'Delete actor'
+            description: 'Delete actor'
+            requestModels:
+               "application/json": ActorRequest
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: 'Actor deleted'
+                responseModels:
+                  application/json: 'SuccessResponse'
+              - statusCode: 500
+                responseBody:
+                  description: 'An error ocurred in the server'
+                responseModels:
+                  application/json: 'ErrorResponse'
+                  
+  swagger:
+    handler: handler.swagger
+    events:
+      - http:
+          path: swagger
+          method: get
+      - http:
+          path: swagger.json
+          method: get
+
+resources:
+  Resources:
+    ActorDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: 'HASH'
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        StreamSpecification:
+          StreamViewType: 'NEW_IMAGE'
+        TableName: ${self:provider.environment.ACTOR_TABLE}
+
+custom:
+  documentation:
+    version: '1'
+    title: 'Indra API'
+    description: 'Prueba Indra'
+    models:
+      - name: 'ErrorResponse'
+        description: 'This is an error'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          properties:
+            message:
+              type: 'string'
+
+      - name: 'SuccessResponse'
+        description: 'Success'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          properties:
+            message:
+              type: 'string'
+              
+      - name: 'GetPeopleResponse'
+        description: 'a Person'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              nombre:
+                type: 'string'
+              ano_nacimiento:
+                type: 'string'
+              color_ojos:
+                type: 'string'
+              genero:
+                type: 'string'
+              color_cabello:
+                type: 'string'
+              estatura:
+                type: 'string'
+              peso:
+                type: 'string'
+              color_piel:
+                type: 'string'
+              planeta_origen:
+                type: 'string'
+              peliculas:
+                type: 'array'
+                items:
+                  type: 'string'
+              especies:
+                type: 'array'
+                items:
+                  type: 'string'
+              naves:
+                type: 'array'
+                items:
+                  type: 'string'
+              vehiculos:
+                type: 'array'
+                items:
+                  type: 'string'
+              url:
+                type: 'string'
+              fecha_creacion:
+                type: 'string'
+              fecha_edicion:
+                type: 'string'
+
+      - name: 'GetFilmsResponse'
+        description: 'a Film'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              titulo:
+                type: 'string'
+              episodio_id:
+                type: 'integer'
+              introduccion:
+                type: 'string'
+              director:
+                type: 'string'
+              productor:
+                type: 'string'
+              fecha_estreno:
+                type: 'string'
+              especies:
+                type: 'array'
+                items:
+                  type: 'string'
+              vehiculos:
+                type: 'array'
+                items:
+                  type: 'string'
+              naves:
+                type: 'array'
+                items:
+                  type: 'string'
+              personajes:
+                type: 'array'
+                items:
+                  type: 'string'
+              planetas:
+                type: 'array'
+                items:
+                  type: 'string'
+              fecha_creacion:
+                type: 'string'
+              fecha_edicion:
+                type: 'string'
+              url:
+                type: 'string'
+
+      - name: 'GetStarshipsResponse'
+        description: 'a Starship'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              nombre:
+                type: 'string'
+              modelo:
+                type: 'string'
+              clase_nave:
+                type: 'string'
+              fabricante:
+                type: 'string'
+              costo_creditos:
+                type: 'string'
+              tamano:
+                type: 'string'
+              tripulantes:
+                type: 'string'
+              pasajeros:
+                type: 'string'
+              maxima_velocidad:
+                type: 'string'
+              hiperdrive:
+                type: 'string'
+              MGLT:
+                type: 'string'
+              capacidad_carga:
+                type: 'string'
+              provisiones:
+                type: 'string'
+              peliculas:
+                type: 'array'
+                items:
+                  type: 'string'
+              pilotos:
+                type: 'array'
+                items:
+                  type: 'string'
+              fecha_creacion:
+                type: 'string'
+              fecha_edicion:
+                type: 'string'
+              url:
+                type: 'string'
+
+      - name: 'GetActorsResponse'
+        description: 'an Actor'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              id:
+                type: 'string'
+              firstName:
+                type: 'string'
+              lastName:
+                type: 'string'
+
+      - name: 'ActorRequest'
+        description: 'an Actor'
+        contentType: 'application/json'
+        schema:
+          $schema: 'http://json-schema.org/draft-04/schema#'
+          type: 'object'
+          properties:
+            id:
+              type: 'string'
+            firstName:
+              type: 'string'
+            lastName:
+              type: 'string'
+
+plugins:
+  - serverless-offline
+  - serverless-aws-documentation

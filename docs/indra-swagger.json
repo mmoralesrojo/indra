@@ -1,0 +1,545 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "2021-11-29T08:08:32Z",
+    "title" : "dev-Indra"
+  },
+  "host" : "d4h7q99in1.execute-api.us-east-2.amazonaws.com",
+  "basePath" : "/dev",
+  "schemes" : [ "https" ],
+  "tags": [
+    {
+      "name": "swapi",
+      "description": "Endpoints related to Star Wars API"
+    },
+    {
+      "name": "dynamo",
+      "description": "Endpoints related to DynamoDB"
+    }
+  ],
+  "paths" : {
+    "/dynamo/actor" : {
+      "get" : {
+        "tags": [ "dynamo" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetActorsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags": [ "dynamo" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "ActorRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ActorRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetActorsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags": [ "dynamo" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "ActorRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ActorRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetActorsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags": [ "dynamo" ],
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "ActorRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ActorRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/SuccessResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/dynamo/actor/{id}" : {
+      "get" : {
+        "tags": [ "dynamo" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetActorsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swagger" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/swagger.json" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/swapi/films" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetFilmsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swapi/films/{id}" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetFilmsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swapi/people" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetPeopleResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swapi/people/{id}" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetPeopleResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swapi/starships" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetStarshipsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/swapi/starships/{id}" : {
+      "get" : {
+        "tags": [ "swapi" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/GetStarshipsResponse"
+            }
+          },
+          "500" : {
+            "description" : "500 response",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "GetPeopleResponse" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "color_cabello" : {
+            "type" : "string"
+          },
+          "color_piel" : {
+            "type" : "string"
+          },
+          "planeta_origen" : {
+            "type" : "string"
+          },
+          "ano_nacimiento" : {
+            "type" : "string"
+          },
+          "peso" : {
+            "type" : "string"
+          },
+          "peliculas" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "color_ojos" : {
+            "type" : "string"
+          },
+          "especies" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "estatura" : {
+            "type" : "string"
+          },
+          "naves" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "fecha_creacion" : {
+            "type" : "string"
+          },
+          "nombre" : {
+            "type" : "string"
+          },
+          "vehiculos" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "url" : {
+            "type" : "string"
+          },
+          "fecha_edicion" : {
+            "type" : "string"
+          },
+          "genero" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "SuccessResponse" : {
+      "properties" : {
+        "message" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ActorRequest" : {
+      "type" : "object",
+      "properties" : {
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "string"
+        }
+      }
+    },
+    "GetActorsResponse" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "GetStarshipsResponse" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "tripulantes" : {
+            "type" : "string"
+          },
+          "provisiones" : {
+            "type" : "string"
+          },
+          "peliculas" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "pasajeros" : {
+            "type" : "string"
+          },
+          "MGLT" : {
+            "type" : "string"
+          },
+          "fecha_creacion" : {
+            "type" : "string"
+          },
+          "nombre" : {
+            "type" : "string"
+          },
+          "modelo" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          },
+          "pilotos" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "hiperdrive" : {
+            "type" : "string"
+          },
+          "capacidad_carga" : {
+            "type" : "string"
+          },
+          "fecha_edicion" : {
+            "type" : "string"
+          },
+          "maxima_velocidad" : {
+            "type" : "string"
+          },
+          "fabricante" : {
+            "type" : "string"
+          },
+          "clase_nave" : {
+            "type" : "string"
+          },
+          "costo_creditos" : {
+            "type" : "string"
+          },
+          "tamano" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "ErrorResponse" : {
+      "properties" : {
+        "message" : {
+          "type" : "string"
+        }
+      }
+    },
+    "GetFilmsResponse" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "episodio_id" : {
+            "type" : "integer"
+          },
+          "fecha_estreno" : {
+            "type" : "string"
+          },
+          "planetas" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "director" : {
+            "type" : "string"
+          },
+          "especies" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "titulo" : {
+            "type" : "string"
+          },
+          "naves" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "fecha_creacion" : {
+            "type" : "string"
+          },
+          "vehiculos" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "url" : {
+            "type" : "string"
+          },
+          "fecha_edicion" : {
+            "type" : "string"
+          },
+          "personajes" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "introduccion" : {
+            "type" : "string"
+          },
+          "productor" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
